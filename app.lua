@@ -13,7 +13,7 @@
 --
 -- Every active person is also in the group "all". Names, addresses and numbers are never written to the log.
 
-local VERSION = "0.1.2"
+local VERSION = "0.1.3"
 local DEVICE_TYPE = "recipients"
 local KEY_APP = "recipients.app_id"
 local PREFIX = "recipients_"
@@ -35,6 +35,9 @@ local function bool(v, d)
 end
 
 local function trim(s) return (tostring(s or ""):gsub("^%s+", ""):gsub("%s+$", "")) end
+
+--- The edge client's log has i, e and d (no w): warnings are written with log.i.
+local function warn(f, ...) log.i("warning: " .. f, ...) end
 
 --- A lower case e-mail address, or nil when it does not look like one.
 function M.email(s)
@@ -182,9 +185,9 @@ end
 --- Brings the device in line with the settings. Returns "created", "updated" or "unchanged".
 function M.sync()
   local people, problems = M.people(cfg)
-  for _, pr in ipairs(problems) do log.w("person %d: %s is missing or not valid", pr[1], pr[2]) end
+  for _, pr in ipairs(problems) do warn("person %d: %s is missing or not valid", pr[1], pr[2]) end
   local lists, too_long = M.lists(people)
-  for _, key in ipairs(too_long) do log.w("%s would be longer than %d characters: the last addresses are left out, use smaller groups", key, MAX_VALUE) end
+  for _, key in ipairs(too_long) do warn("%s would be longer than %d characters: the last addresses are left out, use smaller groups", key, MAX_VALUE) end
   local dev = own_device()
   if dev == nil then
     lynx.createDevice({

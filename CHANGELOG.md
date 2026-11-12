@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.1.3
+
+- A person with a missing or invalid value, or a list longer than 1024 characters, stopped the app: the edge
+  client's log has no `log.w`. Warnings are now written with `log.i` as `warning: ...`, and the tests use a log
+  without `w`.
+
 ## 0.1.2
 
 - No Landsnummer field in the form: a number like 070-123 45 67 becomes +46701234567, and a number in another
