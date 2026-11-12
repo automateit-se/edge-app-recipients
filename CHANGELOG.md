@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.1
+
+- A list longer than IoT Open stores (1024 characters) keeps the whole addresses that fit and logs a warning,
+  instead of a value IoT Open refuses.
+
 ## 0.1.0
 
 - First version. People with e-mail, mobile number, groups and channels in the app's settings; one list per group

@@ -113,6 +113,16 @@ check("SMS only for those who ask for it", function()
   eq(meta.recipients_email_staff, "eva@example.com", "email by default")
 end)
 
+check("a list longer than IoT Open stores keeps whole addresses that fit", function()
+  local M = load_app({})
+  local people = {}
+  for i = 1, 60 do people[#people + 1] = { person_name = "P" .. i, person_email = string.format("person%02d@example.com", i), person_groups = "staff" } end
+  local meta, too_long = M.lists((M.people({ people = people })))
+  assert(#meta.recipients_email_staff <= 1024, #meta.recipients_email_staff)
+  assert(meta.recipients_email_staff:match("@example%.com$"), "ends with a whole address")
+  eq(too_long[1], "recipients_email_all", "reported")
+end)
+
 check("problems are reported without the values", function()
   local M = load_app({})
   local _, problems = M.people({ people = {

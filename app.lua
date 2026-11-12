@@ -13,11 +13,11 @@
 --
 -- Every active person is also in the group "all". Names, addresses and numbers are never written to the log.
 
-local VERSION = "0.1.0"
+local VERSION = "0.1.1"
 local DEVICE_TYPE = "recipients"
 local KEY_APP = "recipients.app_id"
 local PREFIX = "recipients_"
-local MAX_VALUE = 2000 -- longest metadata value IoT Open keeps without trouble
+local MAX_VALUE = 1024 -- longest metadata value IoT Open stores (characters)
 local GROUP_ALL = "all"
 
 local M = {}
@@ -122,7 +122,19 @@ function M.lists(people)
       table.sort(values)
       local key = PREFIX .. channel .. "_" .. g
       local text = table.concat(values, ",")
-      if #text > MAX_VALUE then too_long[#too_long + 1] = key end
+      if utf8.len(text) and utf8.len(text) > MAX_VALUE then
+        -- IoT Open refuses longer values: keep whole entries that fit, and say so in the log
+        too_long[#too_long + 1] = key
+        local kept = {}
+        local len = 0
+        for _, v in ipairs(values) do
+          local add = utf8.len(v) + (#kept > 0 and 1 or 0)
+          if len + add > MAX_VALUE then break end
+          kept[#kept + 1] = v
+          len = len + add
+        end
+        text = table.concat(kept, ",")
+      end
       meta[key] = text
     end
   end
@@ -168,7 +180,7 @@ function M.sync()
   local people, problems = M.people(cfg)
   for _, pr in ipairs(problems) do log.w("person %d: %s is missing or not valid", pr[1], pr[2]) end
   local lists, too_long = M.lists(people)
-  for _, key in ipairs(too_long) do log.w("%s is longer than %d characters and may be cut", key, MAX_VALUE) end
+  for _, key in ipairs(too_long) do log.w("%s would be longer than %d characters: the last addresses are left out, use smaller groups", key, MAX_VALUE) end
   local dev = own_device()
   if dev == nil then
     lynx.createDevice({
