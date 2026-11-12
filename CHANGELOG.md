@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.2
+
+- No Landsnummer field in the form: a number like 070-123 45 67 becomes +46701234567, and a number in another
+  country is written with its own code (+47 ...). `country_code` can still be set in the JSON.
+
 ## 0.1.1
 
 - A list longer than IoT Open stores (1024 characters) keeps the whole addresses that fit and logs a warning,

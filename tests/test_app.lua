@@ -113,6 +113,14 @@ check("SMS only for those who ask for it", function()
   eq(meta.recipients_email_staff, "eva@example.com", "email by default")
 end)
 
+check("without a country code setting a leading 0 becomes +46", function()
+  local M = load_app({})
+  local people = M.people({ people = { { person_name = "Eva", person_phone = "070-111 11 11", person_use_sms = true, person_groups = "staff" } } })
+  eq(people[1].phone, "+46701111111", "default +46")
+  local meta = M.lists(people)
+  eq(meta.recipients_sms_staff, "+46701111111", "in the list")
+end)
+
 check("a list longer than IoT Open stores keeps whole addresses that fit", function()
   local M = load_app({})
   local people = {}

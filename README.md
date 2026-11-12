@@ -16,7 +16,6 @@ Technical names (metadata keys, JSON) are in English; the settings form is in Sw
 | Aviseras med e-post | on by default. E-mail is cheaper than SMS and is the normal channel |
 | Aviseras även med SMS | off by default, for those who must be reached at once |
 | Aktiv | off keeps the row but sends nothing, for example during holidays |
-| Landsnummer | country code for numbers that start with 0 (default `+46`) |
 
 ## What it writes
 

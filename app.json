@@ -12,15 +12,13 @@
     },
     "person_name": { "type": "text", "name": "Namn", "description": "Visas bara här, för att hålla ordning på raderna.", "required": true },
     "person_email": { "type": "text", "name": "E-post", "description": "Rekommenderas: e-post är billigare än SMS.", "validator": "^$|^[^@\\s]+@[^@\\s]+\\.[A-Za-z]{2,}$", "on_error": "Ange en e-postadress, till exempel namn@example.com" },
-    "person_phone": { "type": "text", "name": "Mobilnummer", "description": "Behövs bara för SMS. En inledande 0 byts mot landsnumret nedan, till exempel 070-123 45 67 blir +46701234567.", "validator": "^$|^[+0-9][0-9 ()-]{6,20}$", "on_error": "Ange ett mobilnummer, till exempel 070-123 45 67" },
+    "person_phone": { "type": "text", "name": "Mobilnummer", "description": "Behövs bara för SMS. Skriv numret som vanligt, till exempel 070-123 45 67. Ett nummer i ett annat land skrivs med landsnummer, till exempel +47 912 34 567.", "validator": "^$|^[+0-9][0-9 ()-]{6,20}$", "on_error": "Ange ett mobilnummer, till exempel 070-123 45 67" },
     "person_groups": { "type": "text", "name": "Grupper", "description": "Kommaseparerade gruppnamn på engelska med små bokstäver, till exempel staff, night. Alla aktiva personer är också med i gruppen all.", "validator": "^$|^[A-Za-z0-9_ -]+(,[ ]*[A-Za-z0-9_ -]+)*$", "on_error": "Bokstäver, siffror, _ och -, separerade med komma" },
     "person_use_email": { "type": "toggle", "name": "Aviseras med e-post", "default": true },
     "person_use_sms": { "type": "toggle", "name": "Aviseras även med SMS", "description": "Bara för den som måste nås direkt. SMS kostar mer än e-post.", "default": false },
-    "person_active": { "type": "toggle", "name": "Aktiv", "description": "Av: personen får inga aviseringar, till exempel under semester, men raden finns kvar.", "default": true },
-    "country_code": { "type": "text", "name": "Landsnummer", "description": "Används för mobilnummer som börjar med 0.", "default": "+46", "validator": "^\\+[0-9]{1,4}$", "on_error": "Till exempel +46", "required": true }
+    "person_active": { "type": "toggle", "name": "Aktiv", "description": "Av: personen får inga aviseringar, till exempel under semester, men raden finns kvar.", "default": true }
   },
   "guide": [
-    { "id": "stage_1", "title": "Mottagare", "description": "Personer och grupper för aviseringar. Appen skriver en lista per grupp och kanal som metadata på enheten Mottagare (recipients_email_<grupp>, recipients_sms_<grupp>), som andra appar och notification outputs använder.", "input_fields": ["people"] },
-    { "id": "stage_2", "title": "Inställningar", "description": "", "input_fields": ["country_code"] }
+    { "id": "stage_1", "title": "Mottagare", "description": "Personer och grupper för aviseringar. Appen skriver en lista per grupp och kanal som metadata på enheten Mottagare (recipients_email_<grupp>, recipients_sms_<grupp>), som andra appar och notification outputs använder.", "input_fields": ["people"] }
   ]
 }
