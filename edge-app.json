@@ -1,0 +1,6 @@
+{
+  "name": "Mottagare",
+  "category": "notification",
+  "short_description": "Personer och grupper för aviseringar på ett ställe. Ger listor per grupp och kanal (e-post, SMS) som andra appar och notification outputs använder.",
+  "tags": ["notification", "recipients", "email", "sms"]
+}
