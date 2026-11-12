@@ -50,7 +50,7 @@ local function load_app(opts)
     app = { id = 7, installation_id = 1001, name = "Mottagare" },
     json = { null = setmetatable({}, { __tostring = function() return "null" end }) },
     lynx = lynx,
-    log = { i = logger("I"), w = logger("W"), e = logger("E") },
+    log = { i = logger("I"), e = logger("E") },
   }, { __index = _G })
   local chunk = assert(loadfile("app.lua", "t", env))
   local M = chunk()
@@ -241,7 +241,7 @@ check("an error from IoT Open is logged, not raised", function()
 end)
 
 check("the code returns nothing in the edge client", function()
-  local env = setmetatable({ cfg = {}, app = { id = 1 }, log = { i = print, w = print, e = print }, json = { null = {} } }, { __index = _G })
+  local env = setmetatable({ cfg = {}, app = { id = 1 }, log = { i = print, e = print }, json = { null = {} } }, { __index = _G })
   local chunk = assert(loadfile("app.lua", "t", env))
   eq(select("#", chunk()), 0, "returned values")
 end)
