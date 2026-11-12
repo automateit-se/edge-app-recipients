@@ -20,6 +20,9 @@ local PREFIX = "recipients_"
 local MAX_VALUE = 1024 -- longest metadata value IoT Open stores (characters)
 local GROUP_ALL = "all"
 
+--- Characters in a UTF-8 text (bytes that do not continue a character), without depending on the utf8 library.
+local function chars(s) return select(2, tostring(s):gsub("[^\128-\191]", "")) end
+
 local M = {}
 
 -- ---- settings ------------------------------------------------------------------------------------------------
@@ -122,13 +125,13 @@ function M.lists(people)
       table.sort(values)
       local key = PREFIX .. channel .. "_" .. g
       local text = table.concat(values, ",")
-      if utf8.len(text) and utf8.len(text) > MAX_VALUE then
+      if chars(text) > MAX_VALUE then
         -- IoT Open refuses longer values: keep whole entries that fit, and say so in the log
         too_long[#too_long + 1] = key
         local kept = {}
         local len = 0
         for _, v in ipairs(values) do
-          local add = utf8.len(v) + (#kept > 0 and 1 or 0)
+          local add = chars(v) + (#kept > 0 and 1 or 0)
           if len + add > MAX_VALUE then break end
           kept[#kept + 1] = v
           len = len + add
