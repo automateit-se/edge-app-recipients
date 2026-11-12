@@ -13,7 +13,7 @@
 --
 -- Every active person is also in the group "all". Names, addresses and numbers are never written to the log.
 
-local VERSION = "0.1.1"
+local VERSION = "0.1.2"
 local DEVICE_TYPE = "recipients"
 local KEY_APP = "recipients.app_id"
 local PREFIX = "recipients_"
@@ -44,7 +44,8 @@ function M.email(s)
   return s
 end
 
---- A phone number in international form (+46701234567), or nil. A leading 0 becomes the country code.
+--- A phone number in international form (+46701234567), or nil. A leading 0 becomes the country code (+46 unless
+--- the setting country_code is given in the JSON); a number in another country is written with its own code.
 function M.phone(s, country)
   s = trim(s)
   if s == "" then return nil end
