@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.2.0
+
+- Groups are written as people say them, for example `Personal, Hemtjänst natt`, and become keys
+  (`personal`, `hemtjanst_natt`): `recipients_email_hemtjanst_natt`. Other apps (För länge 0.4) take the group
+  written the same way. Groups already written as keys are unchanged.
+
 ## 0.1.3
 
 - A person with a missing or invalid value, or a list longer than 1024 characters, stopped the app: the edge

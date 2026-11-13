@@ -13,7 +13,7 @@
 --
 -- Every active person is also in the group "all". Names, addresses and numbers are never written to the log.
 
-local VERSION = "0.1.3"
+local VERSION = "0.2.0"
 local DEVICE_TYPE = "recipients"
 local KEY_APP = "recipients.app_id"
 local PREFIX = "recipients_"
@@ -60,11 +60,22 @@ function M.phone(s, country)
 end
 
 --- Group names from "Staff, night" -> {"staff", "night"}: lower case letters, digits, _ and -.
+--- A key from a name a person writes: "Hemtjänst natt" -> "hemtjanst_natt". Keys are kept as they are.
+function M.slug(v)
+  local t = trim(v)
+  for from, to in pairs({ ["å"] = "a", ["Å"] = "a", ["ä"] = "a", ["Ä"] = "a", ["ö"] = "o", ["Ö"] = "o", ["é"] = "e", ["É"] = "e", ["ü"] = "u", ["Ü"] = "u" }) do
+    t = t:gsub(from, to)
+  end
+  t = t:lower():gsub("[^a-z0-9_%-]+", "_"):gsub("_+", "_"):gsub("^_", ""):gsub("_$", "")
+  return t
+end
+
+--- Group keys from what a person writes: "Personal, Hemtjänst natt" -> { "personal", "hemtjanst_natt" }.
 function M.groups(s)
   local out, seen = {}, {}
   for part in tostring(s or ""):gmatch("[^,;]+") do
-    local g = trim(part):lower():gsub("%s+", "_")
-    if g ~= "" and g:match("^[%w_%-]+$") and not g:match("[^%w_%-]") and not seen[g] then
+    local g = M.slug(part)
+    if g ~= "" and not seen[g] then
       seen[g] = true
       out[#out + 1] = g
     end

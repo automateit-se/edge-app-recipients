@@ -87,8 +87,8 @@ end)
 
 check("groups are cleaned and deduplicated", function()
   local M = load_app({})
-  local g = M.groups(" Staff, night ;staff, Night Shift,, bad!name")
-  eq(table.concat(g, "|"), "staff|night|night_shift", "groups")
+  local g = M.groups(" Staff, night ;staff, Night Shift,, bad!name, Hemtjänst natt, Åre-gruppen")
+  eq(table.concat(g, "|"), "staff|night|night_shift|bad_name|hemtjanst_natt|are-gruppen", "groups")
 end)
 
 -- ---- lists -----------------------------------------------------------------------------------------------------
