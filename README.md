@@ -12,7 +12,7 @@ Technical names (metadata keys, JSON) are in English; the settings form is in Sw
 | Setting | Meaning |
 |---|---|
 | Personer | one row per person: name, e-mail, mobile number, groups, channels, active |
-| Grupper | comma separated group names, for example `staff, night`. Every active person is also in `all` |
+| Grupper | comma separated groups as people say them, for example `Personal, Hemtjänst natt`; they become keys (`personal`, `hemtjanst_natt`). Every active person is also in `all` |
 | Aviseras med e-post | on by default. E-mail is cheaper than SMS and is the normal channel |
 | Aviseras även med SMS | off by default, for those who must be reached at once |
 | Aktiv | off keeps the row but sends nothing, for example during holidays |
